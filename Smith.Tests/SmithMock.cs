@@ -10,15 +10,15 @@ namespace Smith.Tests
 
             clone.Name = obj.Name;
 
-            //var tmp = obj.Gun1;
-            //if (tmp == null)
-            //{
+            var tmp = obj.Gun1;
+            if (tmp == null)
+            {
 
-            //}
-            //else
-            //{
-            //    clone.Gun1 = Smith.Clone(tmp);
-            //}
+            }
+            else
+            {
+                clone.Gun1 = Smith.Clone(tmp);
+            }
 
             return clone;
         }

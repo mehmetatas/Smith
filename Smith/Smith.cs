@@ -53,8 +53,6 @@ namespace Smith
 
         private static object CreateSmith(Type type)
         {
-            var smithCloneMethod = typeof(Smith).GetMethod("Clone");
-
             var typeName = type.Name + "Smith";
 
             var baseType = typeof(SmithBase<>).MakeGenericType(type);
@@ -84,11 +82,12 @@ namespace Smith
             var deepCloneMethod = baseType.GetMethod("DeepClone", BindingFlags.Instance | BindingFlags.NonPublic);
             var clonePropMethod = baseType.GetMethod("CloneProp", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            // public override? ReturnType Method(arguments...)
-            var il = typeBuilder.DefineMethod(deepCloneMethod.Name,
-                MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual,
-                deepCloneMethod.ReturnType,
-                GetParameterTypes(deepCloneMethod))
+            // protected override void DeepClone(T original, T clone)
+            var il = typeBuilder
+                .DefineMethod(deepCloneMethod.Name,
+                    MethodAttributes.Family | MethodAttributes.HideBySig | MethodAttributes.Virtual,
+                    deepCloneMethod.ReturnType,
+                    GetParameterTypes(deepCloneMethod))
                 .GetILGenerator();
 
             foreach (var prop in type.GetProperties())
@@ -110,7 +109,7 @@ namespace Smith
                 }
                 else if (typeof(IDictionary).IsAssignableFrom(prop.PropertyType))
                 {
-
+                    
                 }
                 else
                 {

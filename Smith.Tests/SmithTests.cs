@@ -29,14 +29,13 @@ namespace Smith.Tests
 
             Assert.AreEqual(smith.Name, clone.Name);
             Assert.AreEqual(smith.Age, clone.Age);
+            Assert.AreEqual(smith.IsAlive, clone.IsAlive);
 
             Assert.IsNull(clone.Gun1);
 
             Assert.AreNotEqual(smith.Gun2, clone.Gun2);
             Assert.AreEqual(smith.Gun2.Type, clone.Gun2.Type);
             Assert.AreEqual(clone, clone.Gun2.Agent);
-
-            Assert.AreEqual(smith.IsAlive, clone.IsAlive);
         }
     }
 
