@@ -2,7 +2,7 @@
 
 namespace Smith
 {
-    public abstract class SmithBase<T> : ISmith<T> where T : class, new()
+    public abstract class SmithBase : ISmith
     {
         private Hashtable _context;
 
@@ -11,31 +11,41 @@ namespace Smith
             _context = context;
         }
 
-        protected SmithBase()
+        protected void AddToContext(object original, object clone)
         {
-            _context = new Hashtable();
-        }
-
-        protected virtual TProp CloneProp<TProp>(TProp original) where TProp : class, new()
-        {
-            if (_context.Contains(original))
-            {
-                return (TProp)_context[original];
-            }
-
-            return Smith.GetSmith<TProp>(_context).Clone(original);
-        }
-
-        public virtual T Clone(T original)
-        {
-            var clone = new T();
             _context.Add(original, clone);
-
-            DeepClone(original, clone);
-
-            return clone;
         }
 
-        protected abstract void DeepClone(T original, T clone);
+        protected virtual object CloneProp(object original)
+        {
+            return Smith.Clone(original, _context);
+        }
+
+        protected virtual void CloneList(IList original, IList clone)
+        {
+            foreach (var item in original)
+            {
+                clone.Add(Smith.Clone(item, _context));
+            }
+        }
+
+        protected virtual void CloneArray(IList original, IList clone)
+        {
+            for (var i = 0; i < original.Count; i++)
+            {
+                clone[i] = Smith.Clone(original[i], _context);
+            }
+        }
+        
+        protected virtual void CloneDictionary(IDictionary original, IDictionary clone)
+        {
+            foreach (var key in original.Keys)
+            {
+                var value = original[key];
+                clone.Add(Smith.Clone(key, _context), Smith.Clone(value, _context));
+            }
+        }
+
+        public abstract object Clone(object original);
     }
 }

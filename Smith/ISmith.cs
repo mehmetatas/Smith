@@ -2,10 +2,30 @@
 
 namespace Smith
 {
-    public interface ISmith<T> where T : class, new()
+    public interface ISmith
     {
         void SetContext(Hashtable context);
 
-        T Clone(T original);
+        object Clone(object original);
+    }
+
+    public class DefaultSmith : ISmith
+    {
+        public static readonly ISmith Instance = new DefaultSmith();
+
+        private DefaultSmith()
+        {
+            
+        }
+        
+        public void SetContext(Hashtable context)
+        {
+            
+        }
+
+        public object Clone(object original)
+        {
+            return original;
+        }
     }
 }

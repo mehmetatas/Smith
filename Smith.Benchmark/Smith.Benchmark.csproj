@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A7E01389-7162-4780-B58A-030461EEFE69}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{052656A8-1A81-429D-9C01-8ABAD7302BC0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Smith</RootNamespace>
-    <AssemblyName>Smith</AssemblyName>
+    <RootNamespace>Smith.Benchmark</RootNamespace>
+    <AssemblyName>Smith.Benchmark</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,8 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,11 +45,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ISmith.cs" />
+    <Compile Include="Cloning\ClonerHelpers.cs" />
+    <Compile Include="Cloning\ExpressionTreeCloner.cs" />
+    <Compile Include="Cloning\ExpressionTreeCloner.FieldBased.cs" />
+    <Compile Include="Cloning\ExpressionTreeCloner.PropertyBased.cs" />
+    <Compile Include="Cloning\ICloneFactory.cs" />
+    <Compile Include="Cloning\ReflectionCloner.cs" />
+    <Compile Include="Cloning\SerializationCloner.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Smith.cs" />
-    <Compile Include="SmithBase.cs" />
-    <Compile Include="SmithGeneric.cs" />
+    <Compile Include="TestImpl\ExtensionImpl.cs" />
+    <Compile Include="TestImpl\ISmithTest.cs" />
+    <Compile Include="TestImpl\MySmithImpl.cs" />
+    <Compile Include="TestImpl\NuclexExpTreeCloner.cs" />
+    <Compile Include="TestImpl\ProtoBufImpl.cs" />
+    <Compile Include="TestImpl\SerializeImpl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Smith\Smith.csproj">
+      <Project>{a7e01389-7162-4780-b58a-030461eefe69}</Project>
+      <Name>Smith</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
